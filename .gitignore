@@ -1,0 +1,16 @@
+# sbt / Play generated output
+target/
+project/target/
+project/project/
+
+# Play runtime
+logs/
+RUNNING_PID
+
+# IDE
+.idea/
+*.iml
+.bsp/
+
+# OS
+.DS_Store
