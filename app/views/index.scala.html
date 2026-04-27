@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Checker</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+</head>
+<body>
+<div id="app">
+    <h1>Prime Checker</h1>
+
+    <div class="form-group">
+        <label for="numberInput">Enter an integer:</label>
+        <input id="numberInput"
+               type="number"
+               step="1"
+               data-bind="value: inputValue, valueUpdate: 'input'"
+               placeholder="e.g. 17">
+        <button data-bind="click: checkPrime, enable: !loading()">Check</button>
+    </div>
+
+    <!-- ko if: errorMessage() -->
+    <p class="error" data-bind="text: errorMessage"></p>
+    <!-- /ko -->
+
+    <!-- ko if: result() !== null -->
+    <p class="result" data-bind="text: resultMessage"></p>
+    <!-- /ko -->
+</div>
+
+<script src="@routes.Assets.versioned("javascripts/jquery.min.js")"></script>
+<script src="@routes.Assets.versioned("javascripts/knockout.min.js")"></script>
+<script src="@routes.Assets.versioned("javascripts/app.js")"></script>
+</body>
+</html>
