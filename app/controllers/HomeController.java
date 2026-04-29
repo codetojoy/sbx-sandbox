@@ -36,11 +36,12 @@ public class HomeController extends Controller {
         }
 
         int n = valueNode.asInt();
-        PrimeResult result = new PrimeResult(n, primeService.isPrime(n));
+        PrimeResult result = new PrimeResult(n, primeService.isPrime(n), primeService.isPalindrome(n));
 
         ObjectNode json = Json.newObject();
         json.put("value", result.value);
         json.put("isPrime", result.isPrime);
+        json.put("isPalindrome", result.isPalindrome);
         return ok(json);
     }
 
