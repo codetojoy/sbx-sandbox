@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Checker</title>
+    <title>Math Tidbits</title>
     <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
 </head>
 <body>
 <div id="app">
-    <h1>Prime Checker</h1>
+    <h1>Math Tidbits</h1>
 
     <div class="form-group">
         <label for="numberInput">Enter an integer:</label>
@@ -17,15 +17,17 @@
                step="1"
                data-bind="value: inputValue, valueUpdate: 'input'"
                placeholder="e.g. 17">
-        <button data-bind="click: checkPrime, enable: !loading()">Check</button>
+        <button data-bind="click: checkNumber, enable: !loading()">Check</button>
     </div>
 
     <!-- ko if: errorMessage() -->
     <p class="error" data-bind="text: errorMessage"></p>
     <!-- /ko -->
 
-    <!-- ko if: result() !== null -->
-    <p class="result" data-bind="text: resultMessage"></p>
+    <!-- ko if: facts().length > 0 -->
+    <ul class="facts" data-bind="foreach: facts">
+        <li data-bind="text: $parent.formatFact($data)"></li>
+    </ul>
     <!-- /ko -->
 </div>
 
