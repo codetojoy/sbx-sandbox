@@ -3,7 +3,7 @@ package services;
 import javax.inject.Singleton;
 
 @Singleton
-public class PrimeService {
+public class MathFactsService {
 
     public boolean isPrime(int n) {
         if (n < 2) return false;
