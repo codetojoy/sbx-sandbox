@@ -1,31 +1,39 @@
 $(function () {
-    function PrimeViewModel() {
+    function MathTidbitsViewModel() {
         var self = this;
 
         self.inputValue = ko.observable('');
-        self.result = ko.observable(null);
+        self.facts = ko.observableArray([]);
         self.errorMessage = ko.observable('');
         self.loading = ko.observable(false);
 
-        self.resultMessage = ko.computed(function () {
-            var r = self.result();
-            if (r === null) return '';
-            return r.value + ' is ' + (r.isPrime ? 'PRIME' : 'not prime') + '.';
-        });
+        self.formatFact = function (fact) {
+            return fact.value + ' is ' + fact.label + ': ' + (fact.result ? 'YES' : 'NO');
+        };
 
-        self.checkPrime = function () {
+        // !!! TEMPORARY CLIENT-SIDE MOCK !!!
+        // The palindrome fact is computed here in the browser because the
+        // back-end /check endpoint does not yet return isPalindrome.
+        // REMOVE this function and consume the back-end value once
+        // TODO-002 (palindrome back-end) is implemented.
+        function isPalindromeMock(n) {
+            var s = String(Math.abs(n));
+            return s === s.split('').reverse().join('');
+        }
+
+        self.checkNumber = function () {
             var raw = self.inputValue().trim();
 
             if (raw === '') {
                 self.errorMessage('Please enter an integer.');
-                self.result(null);
+                self.facts([]);
                 return;
             }
 
             var n = parseInt(raw, 10);
             if (isNaN(n) || String(n) !== raw) {
                 self.errorMessage('Please enter a valid integer.');
-                self.result(null);
+                self.facts([]);
                 return;
             }
 
@@ -38,7 +46,11 @@ $(function () {
                 contentType: 'application/json',
                 data: JSON.stringify({ value: n }),
                 success: function (data) {
-                    self.result(data);
+                    self.facts([
+                        { value: data.value, label: 'prime', result: data.isPrime },
+                        // !!! MOCK — replace with back-end value after TODO-002 !!!
+                        { value: data.value, label: 'palindromic', result: isPalindromeMock(data.value) }
+                    ]);
                 },
                 error: function (xhr) {
                     var msg = 'An error occurred.';
@@ -46,7 +58,7 @@ $(function () {
                         msg = JSON.parse(xhr.responseText).error || msg;
                     } catch (e) {}
                     self.errorMessage(msg);
-                    self.result(null);
+                    self.facts([]);
                 },
                 complete: function () {
                     self.loading(false);
@@ -55,5 +67,5 @@ $(function () {
         };
     }
 
-    ko.applyBindings(new PrimeViewModel(), document.getElementById('app'));
+    ko.applyBindings(new MathTidbitsViewModel(), document.getElementById('app'));
 });
