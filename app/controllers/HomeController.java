@@ -2,22 +2,22 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.PrimeResult;
+import models.MathFactsResult;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import services.PrimeService;
+import services.MathFactsService;
 
 import javax.inject.Inject;
 
 public class HomeController extends Controller {
 
-    private final PrimeService primeService;
+    private final MathFactsService mathFactsService;
 
     @Inject
-    public HomeController(PrimeService primeService) {
-        this.primeService = primeService;
+    public HomeController(MathFactsService mathFactsService) {
+        this.mathFactsService = mathFactsService;
     }
 
     public Result index() {
@@ -36,7 +36,7 @@ public class HomeController extends Controller {
         }
 
         int n = valueNode.asInt();
-        PrimeResult result = new PrimeResult(n, primeService.isPrime(n), primeService.isPalindrome(n));
+        MathFactsResult result = new MathFactsResult(n, mathFactsService.isPrime(n), mathFactsService.isPalindrome(n));
 
         ObjectNode json = Json.newObject();
         json.put("value", result.value);

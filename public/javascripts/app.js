@@ -1,5 +1,5 @@
 $(function () {
-    function MathTidbitsViewModel() {
+    function MathFactsViewModel() {
         var self = this;
 
         self.inputValue = ko.observable('');
@@ -10,16 +10,6 @@ $(function () {
         self.formatFact = function (fact) {
             return fact.value + ' is ' + fact.label + ': ' + (fact.result ? 'YES' : 'NO');
         };
-
-        // !!! TEMPORARY CLIENT-SIDE MOCK !!!
-        // The palindrome fact is computed here in the browser because the
-        // back-end /check endpoint does not yet return isPalindrome.
-        // REMOVE this function and consume the back-end value once
-        // TODO-002 (palindrome back-end) is implemented.
-        function isPalindromeMock(n) {
-            var s = String(Math.abs(n));
-            return s === s.split('').reverse().join('');
-        }
 
         self.checkNumber = function () {
             var raw = self.inputValue().trim();
@@ -48,8 +38,7 @@ $(function () {
                 success: function (data) {
                     self.facts([
                         { value: data.value, label: 'prime', result: data.isPrime },
-                        // !!! MOCK — replace with back-end value after TODO-002 !!!
-                        { value: data.value, label: 'palindromic', result: isPalindromeMock(data.value) }
+                        { value: data.value, label: 'palindromic', result: data.isPalindrome }
                     ]);
                 },
                 error: function (xhr) {
@@ -67,5 +56,5 @@ $(function () {
         };
     }
 
-    ko.applyBindings(new MathTidbitsViewModel(), document.getElementById('app'));
+    ko.applyBindings(new MathFactsViewModel(), document.getElementById('app'));
 });
